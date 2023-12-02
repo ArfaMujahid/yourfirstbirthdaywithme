@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>21</title>
+    <style>
+      body {
+        background-color: rgba(7, 249, 249, 0.344);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+      }
+      .mainText {
+        text-align: center;
+        padding-top: 100px;
+        padding-bottom: 5px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        color: rgb(1, 51, 51);
+        margin: 0 auto;
+        opacity: 0;
+        animation: fadeIn 2s ease-in-out forwards;
+        white-space: pre-line;
+      }
+      button {
+        margin-top: 5px;
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 30px;
+      }
+
+      .sparkle-container {
+        display: inline-flex;
+        align-items: center;
+        animation: fadeIn 2s ease-in-out forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes swing-left-fwd {
+        0% {
+          -webkit-transform: rotateY(0);
+          transform: rotateY(0);
+          -webkit-transform-origin: left bottom;
+          transform-origin: left bottom;
+        }
+        50% {
+          -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180);
+          -webkit-transform-origin: left bottom;
+          transform-origin: left bottom;
+        }
+        100% {
+          -webkit-transform: rotateY(0);
+          transform: rotateY(0);
+          -webkit-transform-origin: left bottom;
+          transform-origin: left bottom;
+        }
+      }
+
+      @keyframes swing-right-fwd {
+        0% {
+          -webkit-transform: rotateY(0);
+          transform: rotateY(0);
+          -webkit-transform-origin: right;
+          transform-origin: right;
+        }
+        50% {
+          -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+          -webkit-transform-origin: right;
+          transform-origin: right;
+        }
+        100% {
+          -webkit-transform: rotateY(0);
+          transform: rotateY(0);
+          -webkit-transform-origin: right;
+          transform-origin: right;
+        }
+      }
+      @keyframes moveAndFade {
+        0% {
+          opacity: 0;
+          transform: translateY(0) translateX(0);
+        }
+        50% {
+          opacity: 0.6;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(50px) translateX(20px);
+        }
+      }
+
+      .star {
+        position: absolute;
+        font-size: 10px;
+        pointer-events: none;
+        animation: moveAndFade 10s linear infinite;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .mainText {
+          font-size: 14px;
+          margin: 20px;
+          position: relative;
+          align-items: center;
+          justify-content: center;
+        }
+
+        button {
+          font-size: 17px;
+          padding: 15px;
+        }
+
+        body {
+          align-items: center;
+        }
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+      const texts = [
+        "Z to A, it's backwards\n Because nothing about us makes sense\n But it still works",
+        "You don't have to be everything, all at once when you're with me\nYou don't have to be everyone they expect you to be when you're with me\nAll the insecurities, all the baggage, the things that haunt even during the day\nLet me see all of it, take my word I won't runaway\nOr do what you're afraid of, what you won't say\nI'm straightforward and I don't like games\nBut if you're the mystery, I'll take all the turns and I'll chase every dead end\nLet's see how long it takes",
+        "You can feel it in the silence\nYou could feel it on the way home\nYou could see it with the lights out\nYou're in love, true love\n",
+        "At every table I'll save you a seat, Lover",
+        "Building a wall\nTearing it down\nSending a message that I am yours now\nTwo weeping willows throwing an arm to the other\n\nHidden in your shoulder curve\nWaitin' for your chest to burst\nNo one said that it would hurt\nKnowing you\n\nBuilding a wall\nTearing it down\nSending a message that I am yours now\nTwo weeping willows throwing an arm to the other",
+        "There will be happiness after you\nBut there was happiness because of you\nBoth of these can be true \nThere is happiness\n\nPast the blood and bruise\nPast the curses and cries\nThough I could love you for a lifetime\nLeave it all behind and there will be happiness\n\nThere will be happiness after me\nBut there was happiness because of me\nBoth of these things I believe\nThere is happiness",
+        "Our coming-of-age has come and gone\nSuddenly, this summer, it's clear\nI never had the courage of my convictions\nAs long as danger is near\nAnd it's just around the corner, darling\n'Cause it lives in me\nNo, I could never give you peace\n\nBut you know that I'd swing with you for the fences\nSit with you in the trenches\nGive you the silence that only comes when two people understand each other\nI see your brother as my brother, Is it enough?\nI'd give you my sunshine, give you my best\nBut the rain is always gonna come if you're standin' with me\n\nBut I'm a fire and I'll keep your brittle heart warm\nIf your cascade, ocean wave blues come\nThe devil's in the details, but you got a friend in me\nWould it be enough if I could never give you peace?",
+        "I don't realize how mean I can be\n'Cause I can sometimes treat the people\nThat I love like jewelry\n'Cause I can change my mind each day\nI didn't mean to try you on\nI run away when things are good\nI will probably break your heart\nMy ignorance always strikes\nI'll fail to see it from the start\nAnd tear you open 'til the end\n\nI'm sorry that I can't believe\nThat anybody ever really\nStarts to fall in love with me\nI'm sorry that I can't believe\nThat anybody ever really\nStarts to fall in love with me\nAnd someone will love you\nSomeone will love you\nSomeone will love you\nBetter than me",
+        "All of the girls you loved before\n Made you the one I've fallen for\nEvery dead-end street\nLed you straight to me\nNow you're all I need\nI'm so thankful for\nAll of the girls you loved before\nBut I love you more",
+        "When you rewrite your life\nMay I still play a part?\nIn the next one \nWill you find me?",
+        "Will you be a satanist with me?\nWill you be an anarchist with me?\nWill you be a nihilist with me?\nAt least until you find out what a fake I am",
+        "Is it really your anxiety\nThat stops you from giving me everything?\nOr do you just not want to?",
+        "I don't want to want you\nIn my dreams I seem to be more honest\nAnd I admit you have been in quite a few",
+        "I want the parts of you\nYou only show to the corner of your bathroom mirror\nI want the parts of your hand grenade heart\nThat beat slowly with anger and fear\nI want the parts of you\nYou only show to the birds outside your bedroom window\n\nI want your quiet, your screaming and thrashing\nThe scrapes on your knees and the blood that spills over\nThe sweat on your palms and your surveillance shadow\nI want your secrets, your clementine fields\nThe ropes that you climb up, the parts that won't heal\nI want your safe word, your passive resistance\nThe sickness you foster, your favorite addictions\nAnd I want your nightmares, the ghost in your doorway",
+        "You say you love me, but no matter what you say\nThere's only one of two ways\nThat this is gonna end\nSomeone dies or someone gets hurt\nBut if one of us dies\nI hope I die first\n\n'Cause I don't wanna live without you\nI don't wanna ever learn\nHow to fall asleep without you\nTell me what's worse\nLosing you now or later\nMaybe I can break the curse\nAnd I can be in love forever\nIf I die ",
+        "Your past and mine are parallel lines\nStars all aligned and they intertwined\nYour mother brought you up loyal and kind\nTeenage love taught you there's good in goodbye\nEvery woman that you knew brought you here\nI wanna teach you how forever feels",
+        "Will you stay by my side\nWill you promise me\nIf I let go of your hand, you'll fly away and break\nI'm scared of that\n\nWill you stop time\nIf this moment passes\nAs though it hadn't happened\nI’m scared I'll lose you",
+        "I have been the archer\nAnd I have been the prey\nWho could ever leave me darling\nBut who could stay ",
+        "We were supposed to be just friends\nI think there's been a glitch\nA brief interruption, a slight malfunction\nI'd go back to wanting dudes who give nothing\nI thought we had no chance\nAnd that's romance, let's dance",
+        "There's many ways that you can kill the one you love\n The slowest way is never loving them enough ",
+        "In our great war\nIn our tomb of silence\nIn our flashes of battle\nJust reach out for my hand\nIn the crimson bloodshed\nIn our good faith treaties\nI'll close the curtains\nI'll drink my poison all alone\nI can't trust so freely\nMaybe that's the past that's talking\nScreaming from a crypt\nTelling me to punish you\nAnd I'll justify it\n\nIn our great war\nLook up at me with honor and truth\nAnd I will call off the troops\n\nThen we can plant a memory garden\nBecause there is no morning glory\nIt is war, it is never fair\nAnd we have burned for better\nI'll vowed to always be yours\nIf we survive the great war\n",
+        "I let you in on my bad decisions\nYou make them feel less terrible the second that you listen\n\nI wonder if you know\nIf you can tell I'm losing\nSend me every song that keeps you up from sleeping\nI bet I could recite them all I won't forget the feeling\nI won't forget the feeling of staying up with you despite the space between us\nI've never felt this close to someone what if you're my weakness\n\nWhat are you doing to me now?\nYou came out of the blue like that\nI never could have seen you coming\nI think you're everything I've wanted",
+        "They talk and drink and laugh 'bout things\nAnd fall in love in my backyard\nI hide and cower in the corner\nConversation's getting hard\n\nI'd  like to laugh and talk 'bout things\nAnd fall in love in my backyard\nNow it´s my own anxiety\nThat makes the conversation hard\n\nI'm fading away, you know, I used to be on fire\nI'm fading away, you know, I used to be on fire\nI'm standing in the ashes of who I used to be\nI used to be on fire\n\nSo I'm sorry if burn you down\nI won't ask you to wither with me\nI'm used to being ash on the ground\nI'm afraid I will bring you down with me",
+        "Every mornin', I glared at you with storms in my eyes\nHow can you say that you love someone you can't tell is dyin'?\nI sent you signals and bit my nails down to the quick\nMy face was gray, but you wouldn't admit that we were sick\nAnd the air is thick with loss and indecision\nI know my pain is such an imposition\nStop, you're losin' me\nI can't find a pulse\nMy heart won't start anymore\nFor you\nDo something, say something \nLose something, risk something \nYou're losing me \nChoose something\nI got nothing to believe unless you're choosin' me\n",
+        "Try not to abuse your power\nIf you get the chance, would you?\nI know people can be manipulators\nWhat if when I open my eyes that's you?\I'm scared of that\nSometimes I'm scared of you",
+        "I haven't slept since Sunday\nBut my sleepless nights are better with you\n I was good at feeling nothing now I'm hoping\nWhat a drag to love you like I do \nI've been loved before but right now in this moment\nI feel more and more like I was made for you ",
+        "Do you think how I care for you is a trade?\nThe trade is not in the actions, it's in the feelings\nIt's about worrying someone the same way the worry for you\nIt's about giving your 100 percent when the other is not ready to \nDo you think it's love, if you're only loved at your best?\nI think love is loving all the mistakes and the demons \nThey angry Mondays, the tried Sundays. \nYou don't really love someone if you love only one part of them",
+        "Sometimes I wonder when you sleep\nAre you ever dreaming of me\nSometimes when I look into your eyes \nI pretend that you are mine ",
+        "For once you let go of your fears and your ghosts\nOne step not much, but it said enough ",
+        "You are not saying you're in love with me but you're going to",
+        "Our insecurities are the same\nHow can we find a way\nTo reassure the other person \n\nOur insecurities are the same\nHow about we reassure eachother\nThe same way we want to be reassured?",
+        "All's well that's ends well to end up with you ",
+        "I can never understand how someone so kind and thoughtful could think so little of himself\nWhy do you think you don't deserve the kindness you give to everyone else?",
+        "I wanna brain wash you into loving me forever ",
+        "When you cut a hole into my skull\nDo you hate what you see?\nLike I do ",
+        "I don't know why you would ever want to hurt yourself\nThis world deserves someone as amazing as you ",
+        "You scared me to death \nI've never lost someone like that\nAnd you're not the first one I will lose\nI will fight you, for you \nNo matter if you hate me, I won't lose you ",
+        "I think I can see through you\nBut what if it's just a projection of myself\nAnd you're something else \nWhat if I see this wrong and get hurt \nWhat if I'm just setting myself up ",
+        "The things you do only make me want to get closer to you \nThe things you say only make me want to stay ",
+        "He got that boyish look that I like in a man\nI am an architect I'm drawing up the plans\nIt's like I'm seventeen no body understands",
+        "I'm not sure about this gift to you\nIt's not easy putting how you feel on the table \nI'm not sure if you would want me to do this \nMaybe this is too soon \nBecause I would expect you to do the same \nTo be so raw about what you are thinking\nIs it okay for me to do this? ",
+        "I feel crazy in ways I never say\nWill you still love me if it turns out I'm insane\n I think I know what you'll say\nBut it would help to hear you say it anyways ",
+        "I tapped on your window on your darkest night\nThe shape of you was jagged and weak\nThere was nowhere for me to stay\nBut I stayed anyway\n\nAnd if I would've known\nHow many pieces you had crumbled into\nI might've let them lay\n\nYou wouldn't be the first renegade\nTo need somebody\nYou are not the only renegade \nWho needs somebody ",
+        "I just wanna know who broke your nose\nFigure out where they live\nSo I can kick their teeth in\nIs it isn't love \nThen what the fuck is it \n\nI don't wanna die \nThat's a lie \nBut I'm afraid to get sick\n I don't know what it is \nWish I wasn't so tired \nBut I'm tired \nIf you're not enough\nThen I give up \nAnd then nothing is",
+        "I might like you less now that you know me so well\n There's a crack in everything, that's how the light gets in\nAnd I am not an old man having an existential crisis\nAt a Buddhist monastery writing horny poetry\nBut I agree\nI never thought you'd happen to me\nI never thought you'd happen to me",
+        "When I close my eyes\nPlease don't say goodbye to say goodnight\nCause we know goodbye is the end",
+        "Full of loneliness this garden bloomed\nFull of thorns, I bind myself in this sand castle\n\nWhat is your name\nDo you have a place to go?\nCould you tell me?\nI saw you hiding in this garden\n\nAll I know is that all of your warmth is real\nThe blue flower your hand was picking\nI want to hold it but\n\nIt’s my fate\nDon’t smile at me\nShine your light on me\nBecause I can’t get closer to you\nThere’s no name you can call me\n\nYou know that I can’t\nShow you me\nGive you me\nI can’t show you a ruined part of myself\nOnce again I put a mask on and go to see you\nBut I still want you\n\nBloomed in a garden of loneliness\nA flower that resembles you\nI wanted to give it to you\nAfter I take off this foolish mask\n\nBut I know\nI can't do that ever\nI have to hide\nBecause I'm a monster\n\nI am afraid\nI am shattered\nI’m so afraid\nThat you will leave me again in the end\nOnce again I put on a mask and go to see you\n\nThe only thing I can do\nIn the garden\nIn this world\nIs to bloom a pretty flower that resembles you\nAnd to breathe as the me that you know\nBut I still want you\nI still want you\n\nIn the end I always look back and wonder \nIf I had the courage to stand before you\nWould everything be different now\n\nI'm crying over what's disappeared, that's fallen\nLeft alone in this sandcastle\nLooking at this broken mask\n\nAnd I still want you\nBut I still want you",
+        "I'm the problem it's me\nAnd everybody agrees\nI'll stare directly at the sun but never in the mirror\nIt must be exhausting always rooting for the anti hero\nDid you hear my cover narcissistism I disguste as altruism\nHow long till you get exhausted rooting for an anti hero?",
+        "I wander through these nights\nI prefer hiding in plain sight\nIf only you knew where I was walking\nTo a house, not a home, all alone 'cause nobody's there\nWhere I pace in my pen and\nMy friends found friends who care\nWould you still be able to love me despite my hideous loneliness\nForever ungratefulness\nBreakdowns over everything\nCan you love me despite all my ugliness?\nWould you lie to me just to seem like a nice person?",
+        "One night, a few moons ago\nI saw flecks of what could've been lights\nBut it might just have been you\nPassing by unbeknownst to me\nLife is emotionally abusive\nAnd time can't stop me quite like you did\n\nI'm unglued, thanks to you\nAnd it's like snow at the beach\nWeird but fuckin' beautiful\nFlying in a dream, stars by the pocketful\nYou wanting me tonight feels impossible\nBut it's comin' down, no sound, it's all around\nLike snow on the beach\n\nThis scene feels like what I once saw on a screen\nI've never seen someone lit from within\nBlurring out my periphery\nMy smile is like I won a contest\nAnd to hide that would be so dishonest\n\nI can't speak afraid to jinx it\nI don't even dare to wish it\nBut your eyes are flying saucers from another planet\nCan this be a real thing? Can it?\n\nAre we falling like snow at the beach?\nWeird but fuckin' beautiful\nFlying in a dream, stars by the pocketful \nYou wanting me tonight feels impossible\nBut it's comin' down, no sound, it's all around\nLike snow on the beach \n\n",
+        "What you went through yesterday must have been terrifying.\nIt was probably more terrifying to wake up the next morning.\nI didn't get the chance to say this before\n But all I wanted was to give you a hug and tell you it's going to be okay\n That we will try every big and small thing to make it okay\nYou are not alone in this. ",
+        "Would you still like me\nIf I stopped being what you want to see?",
+        "I always been alone \nI've deal with everything on my own\n I don't show when I'm hurt \nI never cry in front of others \nIf i tell you, this is now I feel \nThere is always something deeper \nThat I never show \nBecause I have always been alone \nSomewhere along this path I started to dislike the loneliness\nI started to feel like I was disappearing\nBut I don't know how to break the habits ",
+        "You brush past me in the hallway\nAnd you don't think I can see it, do you?\nI've been watching you for ages\nAnd I spent my time trying not to feel it ",
+        "You probably think it's easy for me\nLike you don't play the lead in all of my dreams\nAnd I don't mean to make it all about me \nBut sometimes people need healing ",
+        "I don't give up on people just because it gets hard\nRelationships are not perfect, they take work\nHow can I make you see, that when it gets hard \nIs when the real test begins \nAnd if you can make it out alive \nYou'll be stronger than ever\n And I don't want to give up on us \nDo you? ",
+        "I don't want you to see me like a saviour\nThat will ruin everything\nI didn't do you any favour\nI just couldn't stand to see you hurting\n\nI honestly thought you would always be the one to save me \nNeither of us have to be everything for the other \nWe will both fall, let's fall together\nWe will both hurt eachother\nLet's just apologize and make up \nLet us fight, but never for the same reason twice\nLet's be partners\nLet's be lovers \nLet us be together",
+        "Every sad song I listen to I think\nWill these lyrics apply to us \nWill this time just be another sad memory\n\nOr will we hate eachother?\nAnd never want to think about it?\nOr maybe this will ruin me and I'll kill myself",
+        "You said I love you, do you still mean it?\nOr did you just say that in the insanity of the situation?\nNow that you have processed everything\nDo you still mean it?",
+        "Here is your chance to break me\nI don't give these out easily\nWhy do I trust you, I don't know\nWhy do we trust anyone at all\nAnd I can't even trust myself or my feelings\nWhat if I make you think something\nAnd then I stop feeling it myself\nOr change my mind, I can't control myself at all\nLike you can never say no \nI pretend to go with the flow \nI become what you want to see\nEven though it's not truly how I feel\n What do I do, do I trust you?\nWhen I can't even trust myself",
+        "What if I told you none of it was accidental?\nAnd the first time that you saw me\nNothing was gonna stop me\nI laid the groundwork, and then\nJust like clockwork\nThe dominoes cascaded in a line\nWhat if I told you I'm a mastermind?\nAnd now you're mine\nIt was all by dеsign\n'Cause I'm a mastermind\n\nNo one wanted to play with me as a little kid\nSo I've been scheming like a criminal ever since\nTo make them love me and make it seem effortless\nThis is the first time I've felt the need to confess\nAnd I swear\nI'm only cryptic and Machiavellian\n'Cause I care",
+        "Can you tell, when I actually don't want to talk about somethingAnd when I'm just tell you to stop, but I want you to keep asking \nCan you tell, when I pretend to be okay? Saying I'll deal with it alone \nBut being alone is what I'm most afraid of\n Can you tell which are the lies I tell you and myself?",
+        "You can't blame yourself for not being able to give your all at all times I'll give you all the time that you need, just don't go slient on me \nThere is nothing that hurts more when you are drowning in your own insecurities\nYou can't hate yourself for going through a tough time \nYou have not seen me at my worse yet, it's all just a test of time \nWho knows how many more we'll give \nBut will we pass together, or fall apart\nI think we'll be fine as long as you don't go slient\nWe'll see what I become at my worse \nWill you be able to stand it or not?\nWe have to go through it, if we want to survive a lifetime\nSo don't hate yourself too much, we all mess up sometimes ",
+        "I would do anything for you \nSo don't shut me out when it gets hard \nThere is nothing worse than silence\nWhen my heart's been beating only for you \nI try not to, but all I can think about is you \nSo don't shut me out\nYou're not the only one with insecurities\nI start to think maybe you don't like me now\nIf you want me to go, say so \nBut if you still want me, don't shut me out \nSay something, anything, anything at all\nAnything you want, just say something ",
+        'I always block out the voices of reason in my head\nAnd the voices say, "You are not the exception, you will never learn your lesson"\n"Foolish one, stop checking your mailbox for confessions of love that ain\'t never gonna come"\n"You will take the long way down"\n"Foolish one, sitting around waiting for confessions of love that are never gonna come"\n"And thinking he\'s the one, you should have been walking out"',
+        "Sometimes you have to touch the flame to know it burns \nSometimes you have to fall in love to know it hurts\nAnd somebody told me once that hearts were made to break \nBut sometimes the only medicine is in the pain \nWe drew a line between us \nIt's an invisible link \nI try hard to leave\n But you can't fight gravity\nAnd I don't want to fight it ",
+        "I don't want to hurt myself again \nI question everything when you go silent \nIf you care, if you want to make it work then please don't do that \nI've been trying to be my best self for you, I try and tell you when I can't\nIs it so much for me to ask that you do the same?\nBut if you keep doing this, I don't know if I can love someone like that forever\nI won't allow myself to keep getting hurt \nSo please, try. Please just make the effort\nIf it's too much I'll be there for you till it gets better \nBut I need to know if you want be there \nI also need the reassurance\nThere is nothing that hurts more than silence ",
+        "You have only see me doing well but\nWill you still like me when I get anxious and lose my mind and hate you and everything\nWill you still stay when I say hurtful things, will you be able to tell that I don't mean them\nWill you still stay when I stop pretending?\nWill you still like me if I show you everything?\nWill you still like me if I show you the chaos I've been hiding?\nOr will you think I'm too much and leave it?",
+        "How do I tell you that I don't know what it means to be happy with some body \nI don't know anything about that, who the hell can write a love song without making it too sad \nThat's all I've been ",
+        "I don't know what love is \nBut I once said it would probably take me at least six months to fall into it \nBack then I never found out what it meant while I thought I did \nNow I think I've fallen for it three weeks later \nWho are you, what are you. I can't believe I'm here \nFalling for you at the wrong place, at the wrong time\nI want to block everything out, I want to love you all my life \nWhat if it doesn't work out? I thought I would be okay with that \nNow I know I'll never get over it, I know now that I'll fight for us \nEverything is so hard, but I want to love you no matter what ",
+        "Is it insensitive for me to say\nGet your shit together?\nSo I can love you\nIs it really your anxiety\nThat stops you from giving me everything?\nOr do you just not want to?",
+        '"You don\'t need to save me\nBut would you run away with me?"',
+        "You did a number on me\nBut honestly who's counting\n1 2 3....",
+        "I've known it from the very start\nWe're a shot in the darkest dark\nOh no, oh no, I'm unarmed\nThe waiting is a sadness\nFading into madness\nOh no, oh no, it won't stop\n\nI'm standin' on the sidewalk alone\nI wait for you to drive by\nI'm tryna see the cards that you won't show\nI'm about to fold unless you say don't go\nUnless you show me you don't want me to go\nBut you won't, but you won't, but you won't",
+        "3 minute gap in our conversation\nEvery second felt longer \nAnd every moment that passed \nI felt worse \nLike my heart could break out of my chest \nI felt like I could throw up\nAll the emotion I contained in a glass container \nIt was so naked I could feel it in every nerve \nBut still I couldn't say a word \n\nI thought the first song I wrote about us would be a love song\nBut my anxiety just keeps getting in the way of us \nI love how I am around you but I thought\nMaybe I'm too sensitive and you are too conscious\nI could feel a distance and you confirmed my greatest fear\nI'm too rigid, too sensitive, I know being around me is too much \n\nIt's dramatic and stupid but even my own anxiety is too much for me \nI give it a month before you get sick of me \nBut it's okay, this isn't the first time and it's not the last \nI'm used to the pain of people leaving, I'll survive this but barely ",
+        "Do you think it's enough to say I love you?\nYou will say it and I will believe it?\nYou have to show that you mean it \nAnd I'm starting to doubt that you do",
+        "I can fight the world and fix our problems as long as I know you have my back \nBut it feels like you don't anymore\nIt's not just about talking it out\nIt's about listening and fixing and I don't feel heard anymore",
+        "I got used to you sharing every small moment of life with you\nNow I have to unlearn what I got used to \nJust know,I can do whatever i put my mind to \nBut there I never any going back ",
+        "I'm sick of telling you what I want ?\nIf you wanted you would have fixed it the first time ?\nBecause the effort lasts for a few days and then you forget?\nYou said you love me because I prioritize? What about you ?\nI will never settle for someone who doesn't love me the way I love him?\nYou are losing me, Do you even want to do something about it?",
+        "I swear I have broken up with you at least 5 times in my head \nBecause the distance makes me anxious and sad \nAnd you don't seem to notice it's there \nBeing together makes me afraid and mad\nI don't think you notice\nI don't think you care \nIf I'm asking too much, then let me go \nBecause you shouldn't have to struggle\nAnd I don't want to settle for less",
+        "You can't just come into my life\nRuin my routine, ruin my nights\nThen leave me alone to bear them \nEvery moment pssses slower \nIt's my fault, I shouldn't have let you take over \nHow can I tell you to always be there \nBut I'm drowning in my thoughts, all the mistakes I made today\nAnd all my masked cry outs for help are only delivered\nUnread, I drown in doubt and fear \nI'm losing my breath slowly, I deleted all the messages and I'll lie tomorrow if anyone asks what the was \nI think I should get used to being alone forever ",
+        "How can I dedicate a hundred love songs to you \nWhen I don't think I should feel that way anymore\nYou say you love me, is this how you treat someone you love\nOr am I just someone you can come back to when you see bored of hanging out with your friends, done with your dinners or whenever that you do during the day that you don't tell\nIs it something bad? Or are you comfortable telling me what it is \nHow can you say you love me if you can't tell me anything\nI'm sick of giving you space and acting fine with it",
+        "You are the best at ignoring me \nThe only time you text is in my dreams \nAre we just a thing I'm imagining\nBut I guess guys get bored after 2 weeks\nIn the beginning I felt we were excited for eachother\nNow it just feels like I'm waiting on you\nI get no explanations and suspicious deflections\nAnd silences\nI told you how I hate it, you know how it makes me feel \nDo you do this on purpose?\nI guess you got bored of this \nCracks begin to appear,I want you to just say it \nBut I know you will never, so I will \nI'm not sure about this, not anymore\nNot when you are so distant \nDon't come to me say, \"What made you feel this?\"\nAnd make it all about me \nStop deflecting things you don't want to talk about\nJust say what you mean so we can be on our way \nYou are not as stupid as you pretend to be \nYou know, then why are you doing this?\nI feel you are tired and bored of it ",
+        "What do you think of me?\nNever needy, even lovely jewel whose shine reflects on you\n Not drawing new scars every week\n",
+        "I always listened to all these love songs \nI wanted someone I could dedicate them to \nHaving a playlist with our names at the top \nAnd all these beautiful songs\nActually means a lot ",
+        "I pretend to be strong, but I am not \nYou pretend to be okay, when you are not \nI think we could be perfect for eachother\nWe could see through the masks and the okays\nBut when we can't, let's just say it \nYou know I'm sincere with you \nI hope you are with me too \nSo let's just say how much it hurts\nLet's just say the thing we keep on hiding\nAnd make it better, let's give all the reassurances",
+        "Two days felt longer than it should have \nI want to say it, but it's so hard\nI don't know if you feel the same way\nSo I won't say it, you'll have to read between the lines when I say \nTwo days felt longer than it should have ",
+        "Some things don't need to be said, they are shown\nSome times you don't need reassurance, just someone who feels like home \nSome things don't need to heard, they are felt and you know \nI'm okay with being hurt over and over, just for once I want stop \nBut you say \"I don't think we'll make it\", I know it's never easy \nI think we could make it, I think we could figure out everything \nI thought the timing was perfect, don't say we rushed over things \nI found you when I really needed it\nBut we both know we won't make it ",
+        "I have known you for two semesters now \nI never expected how it would turn out \nI saw you for the first time on an unexpected Saturday\nThe way you walked towards me, I knew my days would never be the same \n\nI got to know you for the first time on the most unexpected Thursday\nI got to know myself too, I never thought I could feel the way I did \nYou took away the way I couldn't breathe, you put me at ease \nSilent comfort I had never seen\n\nWe got to know eachother so much on that unusual Sunday\nWe didn't say what we were both thinking but I knew it then \nBut I didn't know how I could feel like this so suddenly\nBeing so comfortable with someone is unusual for me \n\nThen I told you on the most awaited Monday\nI always knew I would be the first to say it \nBut I knew you would feel like I did \nNow it's been a while \nIt's good, I'm not hurting like I was, most of the times\nYou made me cry more than once\nYet, but I think it would be better\nI don't know for sure it's just a feeling\nI always hurt myself in the end \nIt's just how I've done things \nBut regardless\n\nYou taught me some good things \nI never realized before\nAll these years I've been so miserable\nThe last two years have been somehow better\nIt's not because I'm somewhere better \nIt's because I'm with good people\nIn the past I always shut myself out \nI thought friends were a waste of time \nI see now, I was just alone \nThe only good times were with the people I lost \nNow I've found some real ones \nSo in short, I can't be happy chasing happiness\nIf I have good people in my life, I can be happy right now \nAnd I am, I'm glad you made me see that \nSo even if we don't work out \nI would do it again\nI would go back to these unexpected nights and days \nAnd I would learn all this again \nI hope you don't make me regret saying this ",
+        "I always thought guys were just made of lust\nSomething that I could never afford to trust\nSo I never did\n\nI always had intricate plans\nI could leave anyone anytime no strings attached\nAnd so I did \n\nI always think only about myself\nI always show everyone what they want to see\nI'm a pathological people pleaser \nI become whoever you want to see\n\nI don't know if what I'm doing is right or not \nThe anxiety always catches up to me \nAnd I want to end everything\n\nBut being around you made me realize\nI'm not the only one with fears and insecurities\nI was the one, who was always made small\nI had too much baggage apparently\nI was always the one to receive advice and be saved by a saviour\nYou made me see, you are more than just the villainized version I make you out to be \nBut don't worry, I do that to everyone, I do that to everything\nI don't know what I am trying to say anymore\nI just like being around you for the time being \nIf this is a mistake, I'll probably just end myself before it can hurt the people around me ",
+        "You think you have to shoulder all the burdens on your own \nMaybe that's just what you've been used to \nLet me tell you, I don't want a saviour and I'm not one\nI've had enough of them, they win the battles but I'm left behind to clean up the dead \nI want you to call me in the middle of the night when you wake up from a nightmare\nI want you to break down to me so that you don't feel alone when it happens \nAnd I don't want to be a saviour to your either\nWe all live in a hell, I want us to burn together knowing that it's okay \nAnd I want us to shine brighter holding eachothers hand ",
+        "Do I love you?\nBut how can I say it's love when I don't trust you completely yet \nHow can I say it's love when deep down it still feels wrong \nOr maybe all these can coexist\nThen how am I supposed to make a decision\nIf I tell you all of this, if I tell you what I really think\nWould still think so well of me?\nWould still be able to love me?\nOr would you hate me? For not being able to trust you completely after everything\nFor still thinking it's wrong even though you respect my boundaries\nBecause even I cross them, then it just hurts me \nIn the end it might not even work \nBecause the life you want is so different from what I always thought my future would be \nOne of us will have to change or both of us will have to compromise\nOr maybe I'm just seeing what I want to see and you are not the person I think you are \nMaybe everyone will find out and my family will hate me, and never trust me again \nMaybe I'm the only one who will be ruined \nMaybe I'm just seeing what I want to see \nAnd you are not someone worth trusting\nIt gets so crazy in my head I don't know what i am doing \nIt just hurts to think about all this \nI don't know what to do when it gets too overwhelming ",
+        "Wanna rush to the ending \nSkip over everything\nI want my life to end \nI just want the conclusion\nMaybe that's why I can't remember anything\nI can't recall the life I've lived and the one I live\nI want to grow up\nSo my mistakes will be mine \nI'll be able to do what I want \nI'm tired of the sanctions\nI want to live my life \nBut isn't there always some chain holding you down \nWhat will be next if I escape this one\nI would rather it be something different at least\nI want to enjoy my life now because of you \nBut I don't know if I'll end up with you \nI don't know if I even like you \nBut I also think I'm in love with you \nI want to jump into you \nI wanna see if I crash or I find a home \nI want to take that risk but there is always something holding me down \nIt's the chains that makes loving you so painful \nHow long till I lose all my blood dripping from my neck and my wrists\nHow long can I hold out? Until I decide to let go of you \nLife is so easy for you, I'll only end up hurting you \nI can never trust myself, I change my mind each moment\nBut what about you? You're caring and just amazing\nBut you also hurt me\nShould I hold out for you?\nHow can I hold out? \nIt's like I'm being pulled in different directions how long till I hurt you? \nEven though I just want to love you \nHow long till I fuck up everything like I always do \nTill I forget my place and make the same mistake\nI wish I could tell you.\nYou'll try to adjust and I know it will hurt you \nI don't want to hurt you \nBut how much can I keep on hurting myself till my love runs out \nI'll be miserable either way, I'd rather have you \nIt's the first time I've felt so alive \nBut how do I keep my sanity and keep you?\nI want to forget all the pain but it comes back \nIt always does, what do I do ",
+        "I pretend to be bullet proof\nBut in my head I'm wondering\nHow long till you get disappointed in me \nHow long till you find someone better and leave me \nYou know it's not easy for me to say it \nBecause you pretend too, I can see it \nPlease don't hide it if you start to hate me \nThe pain won't be as bad if you just say \"I'm leaving\" \nIt's worse when you will pretend because I will notice everything\nSo please don't hide it \nI can't be strong all the time, I will only give you reassurances if you give me too\nBecause I go insane and I villainize you\nSo remind me, if you still care for me ",
+        "Seems like there is always someone who disapproves\nThey'll judge it like they know about me and you \nThe verdict comes from those with nothing else to do \nThe jury's out, my choice is you \n\nSo don't you worry your pretty little mind\nPeople throw rocks at things that shine\nAnd life makes love look hard \nThe stakes are high, the water's rough \nBut this love is ours \n\nAnd it's not theirs to speculate if it's wrong and \nYour hands are tough but they are where mine belong and \nI'll fight their doubt and give you faith with this song for you \n\nSo don't you worry your pretty little mind\nPeople throw rocks at things that shine\nAnd life makes love look hard \nThe stakes are high, the water's rough \nBut they can't take what's ours ",
+        "Those conversations in our drunk phase at 3 am\nYou said \"I'm the type of person who needs reassurance\"\nI wanted to say it so bad, \"that's all I am\"\n But I didn't, though you didn't remember anything\nMaybe I'll get a change to say it again \nBut would I say it? Would I be that vulnerable?\nHow about we keep giving eachother reassurances?\nHow about we start being more honest? \nI hope you will be more comfortable with me to tell me how to feel \nOtherwise I think I'll go crazy thinking I'm the only one whose into this",
+        "That perfume, the smell of the air in June \nWe were both unglued \nFrom the ghosts if the last \nThough we were both haunted\nBut they did disappear with the shine of the moon \nCovered up with secrets and insecurities\nWe let it all flow on that fateful stormy night\nWith the rain pouring down on you and me\nIt felt so free, to let go for once\nBut the ghosts never miss a chance to creep back in\nNo matter the sun, the rain or the moon\nI am haunted\nBy this love, by this pain, by my own fears \nNevertheless, I choose in this moment to welcome it\nIf I become ruined, so be it. \nI'll pay the price, cost of happiness ",
+        "For me love is a trade\nBecause if you don't give as much as I do \nThen you don't love me as I love you \nSo if you can't put in the same effort\nThen there is no point in hurting eachother's feeling\nBecause I'll go cold overtime if it keeps up \nThen there is no turning back ",
+        "Know that we can't keep going in circles forever\nI can't run to you every time you shut down\nWhen don't want a hand to reach out to you \nI can't grab yours and run, you'll have to take mine \nYou'll have to come out of your room and say something\nBecause love runs out, it fades away when you keep on getting hurt and keep on hurting ",
+        "When you look at me, do you still think\nThat I shine brighter than anyone?\nOr have you seen somebody else lately\nWho reminds you of the sun?",
+        "I was playing back a thousand memories\n Thinking about everything we've been through\nWhen time stood still and I had you\nCome back to me like you would if this was a movie\nBut if this was a movie, you'd be here by now",
+        "I wanna kill you, if you don't beat me to it",
+        "Light pink sky up on the roof\nSun sinks down, no curfew\nTwenty questions, we tell the truth\nYou've been stressed out lately? Yeah, me too\nSomething gave you the nerve\nTo touch my hand\nIt's nice to have a friend",
+        "It only hurts this much right now\nWas what I was thinking the whole time\nI never trust it if it rises fast\nIt can't last\nIt only feels this raw right now\nLost in the labyrinth of my mind\nYou know how much I hate that everybody just expects me to bounce back\nJust like that\nBreathe in, breathe through\nBreathe deep, breathe out\nBreak up, break free\n Break through, break down\nUh oh, I'm falling in love\n Oh no, I'm falling in love again\n Oh, I'm falling in love\n I thought the plane was going down\n How'd you turn it right around",
+        "I know the secrets, I do believe in all that I hear about you\nThings I cannot begin to unlock, the key is right under the blue\nI have some fears, I'm born with ideas to run from the heat of someone\nBut I'II never rest, and I won't forget the taste of my morning sun\nI can't get my head around you and I can't get enough\nAnd I've been looking so hard for love\nBut I can't get my head around you and I can't get enough",
+        'Industry disruptors and soul deconstructors\nAnd smooth-talking hucksters out glad-handing each other\nAnd the voices that implore, "You should be doing more"\nTo you, I can admit that I\'m just too soft for all of it',
+        "I once believed love would be Black and white\nBut it's golden\nI once believed love would be burning red\nBut it's golden\nLike Daylight",
+        "Most days, the sky ain't as blue as it's supposed to be\nAnd most days I'm scared for the planet underneath my feet\nWe're burnin' up like a cigarette\nEveryone we love's gonna end up dead\nIt gets real dark when I'm in my head\nBut you make it irrelevant",
+        "What should be over burrowed under my skin\nIn heart-stopping waves of hurt\nI want auroras and sad prose\nI want to watch wisteria grow right over my bare feet\n'Cause I haven't moved in years\nAnd I want you right here\nA red rose grew up out of ice frozen ground\nWith no one around to tweet it\nWhile I bathe in cliffside pools\nWith my calamitous love and insurmountable grief\nTake me to the lakes where all the poets went to die\nI don't belong, and my beloved, neither do you\nThose Windermere peaks look like a perfect place to cry\nI'm setting off, but not without my muse\nNo, not without you",
+        "I'm not afraid of anything at all\nI'm not afraid of living on a fault line\n'Cause nothing ever shakes me\nNot a plane going down\nIn the ocean, I'm drowning\nI'm not afraid of getting older\nI'm sick of feeling alone\nIn a room full of people\n\nWatching the world from the sidelines\nHad nothing to prove\n'Til you came into my life\nGave me something to lose\nNow I know what it feels like\nTo wanna go outside\nLike the shape of my outline\n\nAnd I used to think\nYou could hear the ocean in a seashell\nWhat a childish thing!",
+        "Say, \"I'm fine, \" but it isn't true\nI don't wanna keep secrets just to keep you\n But I screamed for whatever it's worth\n\"I love you, \" ain't that the worst thing you ever heard?",
+        "Time, curious time\nGave me no compasses, gave me no signs\nWere there clues I didn't see?\n\nTime, mystical time\nCuttin' me open, then healin' me fine\nWere there clues I didn't see?\n\nAnd isn't it just so pretty to think\nAll along there was some\nInvisible string\nTying you to me?",
+        "Give me everything you've got\nI'll take what I can get\nI want to hear your story and be a part of it\nThank your father before you\nHis mother before him\nWho would I be without you, without them?\nSpeak to me\nUntil your history's no mystery to me\nTalk to me\nUntil the words run dry, we'll see eye to eye\nI'll give everything I've got\nPlease take what I can give\nI want you to hear my story and be a part of it\nThank my father before me\nHis mother before him\nWho would you be without me, without them?",
+        "I'm terrified of the shift in shadows\nLying in a dimly lit room\nThere's nothing that you dread  \n I can't even sleep in my own bed\n\nYou are every heart's conqueror\nI get scared off reflections in the mirror\nYou would rather be the first to strike \nAnd I rob all the bodies after the fight\n\nBut I see, you are afraid of shadows in your room\nThere is so much that you dread\nThere are times when you can't sleep in your own bed\n\nThere are skeletons that follow you around\nYou lose a part of yourself after every fight",
+        "Familiarity breeds contempt\nDon't put me in the basement\nWhen I want the penthouse of your heart\nI made you my world but have you heard?\nI can reclaim the land",
+        "When I'm sick and tired\nAnd when my mind is barely there\nWhen a machine keeps me alive\nAnd I'm losing all my hair\nI hope you kiss my rotten head\nAnd pull the plug\nKnow that I've burned every playlist\nAnd I've given all my love",
+        "You think I lost my faith\nI chose a life of sin\n Wish you could forgive\nI got sharp edges\nI get defensive\nToo lost to care\nI'm sorry that I hurt you\n\nBe my protector when I cross the Sahara\nTake me there\nTake me there and\nLove me like a desert rose\nHold me like you can't let go\nKeep me safe when I come home\nLove me like a desert rose",
+        "Would you love me more\nIf I killed someone for you?\nWould you hold my hand?\nThey're the same ones that I used\nWhen I killed someone for you\n",
+        "I wanna brainwash you into loving me forever",
+        "I wanna kill you, if you don't beat me to it",
+        "When you cut a hole into my skull\nDo you hate what you see?\nLike I do ",
+      ];
+
+      let displayedIndexes = [];
+
+      function getRandomText() {
+        const totalTexts = texts.length;
+
+        if (displayedIndexes.length === totalTexts) {
+          displayedIndexes = [];
+        }
+
+        let randomIndex;
+        do {
+          randomIndex = Math.floor(Math.random() * totalTexts);
+        } while (displayedIndexes.includes(randomIndex));
+
+        displayedIndexes.push(randomIndex);
+
+        return {
+          text: texts[randomIndex],
+          index: randomIndex,
+        };
+
+        // console.log(totalTexts);
+        // return {
+        //   text: texts[totalTexts - 1],
+        //   index: totalTexts - 1,
+        // };
+      }
+
+      function refreshText() {
+        const mainText = document.querySelector(".mainText");
+        const sparkle1 = document.querySelector(".sparkle:nth-child(1)");
+        const sparkle2 = document.querySelector(".clover:nth-child(2)");
+
+        sparkle1.style.animation = "none";
+        sparkle2.style.animation = "none";
+        mainText.style.animation = "none";
+
+        setTimeout(() => {
+          mainText.style.animation = "fadeIn 2s ease-in-out forwards";
+          sparkle1.style.animation = "swing-right-fwd 2s ease-in forwards";
+          sparkle2.style.animation = "swing-left-fwd 2s ease-in forwards";
+        }, 100);
+
+        const newText = getRandomText();
+        mainText.innerHTML = newText.text;
+        logButtonClick(newText.text);
+      }
+
+      function logButtonClick(textText) {
+        $.ajax({
+          type: "POST",
+          // url: "https://yourfirstbirthdaywithme.netlify.app/logButtonClick",
+          url: "https://yourfirstbirthdaywithme.glitch.me/logButtonClick",
+          data: { clickedText: textText },
+          success: function (response) {
+            console.log("Response: " + response);
+            console.log("Data: " + data);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error logging button click:");
+            console.log("Status: " + textStatus);
+            console.log("Error thrown: " + errorThrown);
+            console.log("Response Text: " + jqXHR.responseText);
+          },
+        });
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.createElement("div");
+        container.className = "container";
+        document.body.appendChild(container);
+
+        const maxStars = 30;
+        let stars = [];
+
+        function createStar() {
+          if (stars.length >= maxStars) {
+            const oldestStar = stars.shift();
+            oldestStar.remove();
+          }
+
+          let star = document.createElement("div");
+          star.className = "star";
+          star.innerHTML = "&#10024;";
+          container.appendChild(star);
+          stars.push(star);
+
+          let xPos = Math.random() * window.innerWidth;
+          let yPos = Math.random() * window.innerHeight;
+
+          star.style.left = `${xPos}px`;
+          star.style.top = `${yPos}px`;
+
+          let speed = Math.random() * 2 + 1;
+
+          let angle = Math.random() * Math.PI * 2;
+          let xSpeed = Math.cos(angle) * speed;
+          let ySpeed = Math.sin(angle) * speed;
+
+          function move() {
+            xPos += xSpeed;
+            yPos += ySpeed;
+
+            star.style.transform = `translate(${xPos}px, ${yPos}px)`;
+
+            if (
+              xPos < -20 ||
+              xPos > window.innerWidth + 20 ||
+              yPos < -20 ||
+              yPos > window.innerHeight + 20
+            ) {
+              xPos = Math.random() * window.innerWidth;
+              yPos = Math.random() * window.innerHeight;
+
+              const newAngle = Math.random() * Math.PI * 2;
+              xSpeed = Math.cos(newAngle) * speed;
+              ySpeed = Math.sin(newAngle) * speed;
+            }
+
+            requestAnimationFrame(move);
+          }
+
+          move();
+
+          setTimeout(() => {
+            star.remove();
+            stars.splice(stars.indexOf(star), 1);
+          }, 10000);
+        }
+
+        setInterval(createStar, 1000);
+
+        refreshText();
+      });
+    </script>
+  </head>
+  <body>
+    <p class="mainText"></p>
+    <button class="sparkle-container" onclick="refreshText()">
+      <span class="sparkle">✨</span>
+      <span class="clover">🍀</span>
+    </button>
+  </body>
+</html>
